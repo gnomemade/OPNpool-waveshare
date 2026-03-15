@@ -85,7 +85,7 @@ logger:
 
 opnpool:
   id: opnpool_1
-  RS-485:
+  rs485:
     tx_pin:  21  # or 26 for <= r3 boards 
     rx_pin:  22  # or 25 for <= r3 boards
     rts_pin: 23  # or 27 for <= r3 boards
