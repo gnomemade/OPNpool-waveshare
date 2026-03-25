@@ -165,13 +165,25 @@ esptool.py --chip esp32s3 --port /dev/cu.usbmodem101 write_flash 0x0 firmware.fa
 podman exec esphome esphome run /config/opnpool-waveshare-s3.yaml --device <device-ip> --no-logs
 ```
 
-### 5. Integrate with Home Assistant
+### 5. Set Up Home Assistant
 
 1. Open Home Assistant at `http://<host>:8123`
-2. Go to **Settings > Devices & Services > Add Integration**
-3. Search for **ESPHome**
-4. Enter the device IP address, port `6053`
-5. Enter the API encryption key from your `secrets.yaml`
+2. Complete the onboarding wizard:
+   - Create an admin account (username + password)
+   - Set your home name and location (used for weather, sunrise/sunset automations)
+   - Choose units (imperial/metric)
+   - Opt in/out of analytics
+3. Add the ESPHome integration:
+   - Go to **Settings > Devices & Services > Add Integration**
+   - Search for **ESPHome**
+   - Host: your device IP (e.g., `10.3.3.50`), Port: `6053`
+   - Enter the API encryption key from your `secrets.yaml`
+4. The OPNpool device will appear with all entities:
+   - **Switches:** Pool Mode, Spa Mode, Vacuum (AUX1), Light (AUX2), Features 1-4
+   - **Climate:** Pool Heater, Spa Heater (with temperature setpoints)
+   - **Sensors:** Water temp, air temp, pump power/flow/speed, chlorinator level/salt
+   - **Binary sensors:** Pump running, service mode, freeze protection, etc.
+   - **Text sensors:** Schedules, pump state, controller info
 
 ## Testing
 
@@ -202,6 +214,77 @@ podman exec esphome esphome run /config/rs485-test.yaml --device <device-ip> --n
 - Reduce log verbosity in the YAML config
 - Close extra browser tabs connected to the device
 - The ESPHome API supports max 8 simultaneous connections
+
+## Updating
+
+### Upstream OPNpool Updates
+
+This repo tracks [cvonk/OPNpool](https://github.com/cvonk/OPNpool) as the `origin` remote. To evaluate and merge new upstream releases:
+
+```bash
+# Fetch latest upstream changes
+git fetch origin
+
+# See what changed upstream since our fork
+git log origin/master --oneline --not HEAD
+
+# Diff our modifications against upstream
+git diff origin/master -- components/opnpool/pool_task/rs485.cpp
+
+# Review all upstream changes to the components we use
+git diff HEAD...origin/master -- components/
+
+# If changes look safe, merge upstream into our branch
+git merge origin/master
+```
+
+**Our only code change** is in `components/opnpool/pool_task/rs485.cpp` line ~224: `UART_MODE_UART` instead of `UART_MODE_RS485_HALF_DUPLEX`. When merging upstream, check if this line was modified. If upstream changes the UART init code, manually verify our change is preserved.
+
+The YAML config (`opnpool-waveshare-s3.yaml`) is a separate file and won't conflict with upstream's `opnpool-1.yaml`. However, if upstream adds new entities or config options to `opnpool-1.yaml`, you may want to add them to our config as well:
+
+```bash
+# Compare our config with upstream's stock config
+diff opnpool-1.yaml opnpool-waveshare-s3.yaml
+```
+
+### ESPHome Updates
+
+The ESPHome container pulls `ghcr.io/esphome/esphome:latest`. To update:
+
+```bash
+# On the Docker host
+podman pull ghcr.io/esphome/esphome
+podman stop esphome && podman rm esphome
+podman run -d \
+  --name esphome \
+  --restart unless-stopped \
+  --network host \
+  -v /opt/homeassistant/esphome-config:/config \
+  -v /etc/localtime:/etc/localtime:ro \
+  ghcr.io/esphome/esphome
+
+# Recompile and OTA flash with the new ESPHome version
+podman exec esphome esphome run /config/opnpool-waveshare-s3.yaml --device <device-ip> --no-logs
+```
+
+### Home Assistant Updates
+
+```bash
+# On the Docker host (as root since HA runs under sudo podman)
+sudo podman pull ghcr.io/home-assistant/home-assistant:stable
+sudo podman stop homeassistant && sudo podman rm homeassistant
+sudo podman run -d \
+  --name homeassistant \
+  --restart unless-stopped \
+  --network host \
+  --privileged \
+  -v /opt/homeassistant/config:/config \
+  -v /etc/localtime:/etc/localtime:ro \
+  -v /run/dbus:/run/dbus:ro \
+  ghcr.io/home-assistant/home-assistant:stable
+```
+
+> **Note:** After recreating containers, re-enable the systemd services if using `--new` flag in `podman generate systemd`. The config data persists in `/opt/homeassistant/config` and `/opt/homeassistant/esphome-config`.
 
 ## Credits
 
