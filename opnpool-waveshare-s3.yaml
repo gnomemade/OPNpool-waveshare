@@ -1,0 +1,186 @@
+# OPNpool config for Waveshare ESP32-S3-RS485-CAN board
+# Modified from opnpool-1.yaml for ESP32-S3 variant with Waveshare pin mapping
+
+substitutions:
+  device_name: opnpool-1
+  friendly_name: "OPNpool meets ESPHome esp32s3"
+  description: "External component, see https://github.com/cvonk/OPNpool_meets_ESPHome"
+
+esphome:
+  name: ${device_name}
+  comment: ${description}
+  friendly_name: ${friendly_name}
+
+esp32:
+  variant: esp32s3
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+
+logger:
+  level: DEBUG
+  initial_level: WARN
+  hardware_uart: USB_SERIAL_JTAG  # free up UART0 for RS485
+  logs:
+    rs485: INFO
+    datalink_rx: WARN
+    datalink_tx: WARN
+    network_rx: WARN
+    network_create: WARN
+    pool_task: WARN
+    ipc: WARN
+    poolstate: WARN
+    poolstate_rx: INFO
+    opnpool: WARN
+    opnpool_climate: WARN
+    opnpool_switch: WARN
+    opnpool_sensor: WARN
+    opnpool_binary_sensor: WARN
+    opnpool_text_sensor: WARN
+    enum_helpers: WARN
+
+debug:
+  update_interval: 60s
+
+wifi:
+  domain: !secret domain_name
+  min_auth_mode: WPA2
+  reboot_timeout: 300s
+  networks:
+  - ssid: !secret wifi_ssid
+    password: !secret wifi_password
+  ap:
+    ssid: "${device_name} Config"
+    password: !secret ap_password
+
+captive_portal:
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+time:
+  - platform: homeassistant
+    id: ha_time
+
+web_server:
+  port: 80
+  auth:
+    username: !secret web_username
+    password: !secret web_password
+
+external_components:
+  - source:
+      type: local
+      path: components
+
+opnpool:
+  id: opnpool_1
+  flash_size: "16MB"
+
+  # RS485 pin mapping for Waveshare ESP32-S3-RS485-CAN
+  rs485:
+    tx_pin:  17  # GPIO17 (Waveshare RS485 TXD)
+    rx_pin:  18  # GPIO18 (Waveshare RS485 RXD)
+    rts_pin: 21  # GPIO21 (Waveshare RS485 RTS/DE)
+
+  matter:
+    enabled: false
+    discriminator: !secret matter_discriminator
+    passcode: !secret matter_passcode
+
+  # climate thermostats
+  pool_climate:
+    name: "Pool Heater"
+  spa_climate:
+    name: "Spa Heater"
+
+  # circuit/feature switches
+  pool:
+    name: "Pool Mode"
+  spa:
+    name: "Spa Mode"
+  aux1:
+    name: "Vacuum"
+  aux2:
+    name: "Light"
+  feature1:
+    name: "Feature 1"
+  feature2:
+    name: "Feature 2"
+  feature3:
+    name: "Feature 3"
+  feature4:
+    name: "Feature 4"
+
+  # analog sensors
+  water_temperature:
+    name: "Pool water"
+    state_class: "measurement"
+    device_class: "temperature"
+    unit_of_measurement: "°F"
+  air_temperature:
+    name: "Outside air"
+    state_class: "measurement"
+    device_class: "temperature"
+    unit_of_measurement: "°F"
+  primary_pump_power:
+    name: "Pump power"
+    state_class: "measurement"
+    device_class: "power"
+    unit_of_measurement: "W"
+  primary_pump_flow:
+    name: "Pump flow"
+    state_class: "measurement"
+    device_class: "volume_flow_rate"
+    unit_of_measurement: "gal/min"
+  primary_pump_speed:
+    name: "Pump speed"
+    state_class: "measurement"
+    unit_of_measurement: "rpm"
+  chlorinator_level:
+    name: "Chlorinator level"
+    unit_of_measurement: "%"
+  chlorinator_salt:
+    name: "Chlorinator salt"
+    state_class: "measurement"
+    unit_of_measurement: "ppm"
+
+  # binary sensors
+  primary_pump_running:
+    name: "Pump running"
+    device_class: "running"
+  mode_service:
+    name: "Service mode"
+  mode_temperature_inc:
+    name: "Temperature increase mode"
+  mode_freeze_protection:
+    name: "Freeze protection mode"
+  mode_timeout:
+    name: "Timeout mode"
+
+  # text sensors
+  pool_sched:
+    name: "Pool schedule"
+  spa_sched:
+    name: "Spa schedule"
+  primary_pump_mode:
+    name: "Pump mode"
+  primary_pump_state:
+    name: "Pump state"
+  primary_pump_error:
+    name: "Pump error"
+  chlorinator_name:
+    name: "Chlorinator name"
+  chlorinator_status:
+    name: "Chlorinator status"
+  system_time:
+    name: "Controller system time"
+  controller_type:
+    name: "Controller type"
+  interface_firmware:
+    name: "Interface firmware"

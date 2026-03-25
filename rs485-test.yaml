@@ -1,0 +1,70 @@
+# Minimal RS485 receive test for Waveshare ESP32-S3-RS485-CAN
+# Reads raw UART bytes and logs them to confirm hardware works
+
+substitutions:
+  device_name: opnpool-1
+  friendly_name: "RS485 Test"
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+  on_boot:
+    priority: -100
+    then:
+      - lambda: |-
+          // Configure GPIO21 as output for RS485 DE/RE control
+          gpio_config_t io_conf = {};
+          io_conf.pin_bit_mask = (1ULL << 21);
+          io_conf.mode = GPIO_MODE_OUTPUT;
+          io_conf.pull_up_en = GPIO_PULLUP_DISABLE;
+          io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
+          gpio_config(&io_conf);
+          // Set LOW = receive mode (DE=0, RE*=0)
+          gpio_set_level(GPIO_NUM_21, 0);
+          ESP_LOGI("rs485_test", "GPIO21 set LOW (receive mode)");
+
+esp32:
+  variant: esp32s3
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+
+logger:
+  level: VERBOSE
+
+uart:
+  id: rs485_uart
+  tx_pin: 17
+  rx_pin: 18
+  baud_rate: 9600
+  data_bits: 8
+  parity: NONE
+  stop_bits: 1
+  debug:
+    direction: RX
+    dummy_receiver: true
+    after:
+      bytes: 20
+      timeout: 200ms
+    sequence:
+      - lambda: |-
+          UARTDebug::log_hex(direction, bytes, ',');
+
+wifi:
+  domain: !secret domain_name
+  networks:
+  - ssid: !secret wifi_ssid
+    password: !secret wifi_password
+  ap:
+    ssid: "${device_name} Config"
+    password: !secret wifi_password
+
+captive_portal:
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
