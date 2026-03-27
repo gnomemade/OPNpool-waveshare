@@ -86,6 +86,10 @@ class OpnPool : public Component {
     void set_feature2_switch(OpnPoolSwitch * const sw);
     void set_feature3_switch(OpnPoolSwitch * const sw);
     void set_feature4_switch(OpnPoolSwitch * const sw);
+    void set_aux4_switch(OpnPoolSwitch * const sw);
+    void set_aux5_switch(OpnPoolSwitch * const sw);
+    void set_aux6_switch(OpnPoolSwitch * const sw);
+    void set_aux7_switch(OpnPoolSwitch * const sw);
 
     // ========== Sensor Setters ==========
     void set_air_temperature_sensor(OpnPoolSensor * const s);

@@ -69,6 +69,10 @@ switch_id_to_network_circuit(switch_id_t const id)
     static_assert(enum_index(switch_id_t::FEATURE2) == enum_index(network_pool_circuit_t::FEATURE2), "switch_id_t and network_pool_circuit_t must have matching elements");
     static_assert(enum_index(switch_id_t::FEATURE3) == enum_index(network_pool_circuit_t::FEATURE3), "switch_id_t and network_pool_circuit_t must have matching elements");
     static_assert(enum_index(switch_id_t::FEATURE4) == enum_index(network_pool_circuit_t::FEATURE4), "switch_id_t and network_pool_circuit_t must have matching elements");
+    static_assert(enum_index(switch_id_t::AUX4)     == enum_index(network_pool_circuit_t::AUX4),     "switch_id_t and network_pool_circuit_t must have matching elements");
+    static_assert(enum_index(switch_id_t::AUX5)     == enum_index(network_pool_circuit_t::AUX5),     "switch_id_t and network_pool_circuit_t must have matching elements");
+    static_assert(enum_index(switch_id_t::AUX6)     == enum_index(network_pool_circuit_t::AUX6),     "switch_id_t and network_pool_circuit_t must have matching elements");
+    static_assert(enum_index(switch_id_t::AUX7)     == enum_index(network_pool_circuit_t::AUX7),     "switch_id_t and network_pool_circuit_t must have matching elements");
 
     return static_cast<network_pool_circuit_t>(static_cast<uint8_t>(id));
 }

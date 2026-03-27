@@ -18,14 +18,14 @@ esp32:
     type: esp-idf
 
 logger:
-  level: VERBOSE
+  level: DEBUG
   initial_level: WARN
   hardware_uart: USB_SERIAL_JTAG  # free up UART0 for RS485
   logs:
     rs485: INFO
-    datalink_rx: VERBOSE
+    datalink_rx: WARN
     datalink_tx: WARN
-    network_rx: VERBOSE
+    network_rx: WARN
     network_create: WARN
     pool_task: WARN
     ipc: WARN
@@ -105,14 +105,18 @@ opnpool:
   spa:
     name: "Spa"
   aux1:
-    name: "Waterfall"
+    name: "AUX1"
   aux2:
-    name: "Booster Pump"
+    name: "AUX2"
   aux3:
     name: "Lights"
   feature1:
-    name: "Waterfall Feature"
+    name: "Feature 1"
   feature3:
+    name: "Feature 3"
+  aux5:
+    name: "Waterfall"
+  aux7:
     name: "Pool Low"
 
   # analog sensors

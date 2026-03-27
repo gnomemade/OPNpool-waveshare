@@ -712,8 +712,32 @@ OpnPool::set_feature3_switch(OpnPoolSwitch * const sw)
 
 void
 OpnPool::set_feature4_switch(OpnPoolSwitch * const sw)
-{ 
-    this->switches_[enum_index(network_pool_circuit_t::FEATURE4)] = sw; 
+{
+    this->switches_[enum_index(network_pool_circuit_t::FEATURE4)] = sw;
+}
+
+void
+OpnPool::set_aux4_switch(OpnPoolSwitch * const sw)
+{
+    this->switches_[enum_index(network_pool_circuit_t::AUX4)] = sw;
+}
+
+void
+OpnPool::set_aux5_switch(OpnPoolSwitch * const sw)
+{
+    this->switches_[enum_index(network_pool_circuit_t::AUX5)] = sw;
+}
+
+void
+OpnPool::set_aux6_switch(OpnPoolSwitch * const sw)
+{
+    this->switches_[enum_index(network_pool_circuit_t::AUX6)] = sw;
+}
+
+void
+OpnPool::set_aux7_switch(OpnPoolSwitch * const sw)
+{
+    this->switches_[enum_index(network_pool_circuit_t::AUX7)] = sw;
 }
 
 void

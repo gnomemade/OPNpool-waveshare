@@ -59,7 +59,7 @@ struct matter_config_t {
 constexpr uint8_t MATTER_POOL_THERMO_IDX = 0;  ///< Pool thermostat endpoint index.
 constexpr uint8_t MATTER_SPA_THERMO_IDX  = 1;  ///< Spa thermostat endpoint index.
 constexpr uint8_t MATTER_NUM_THERMOSTATS = 2;  ///< Total thermostat endpoints.
-constexpr uint8_t MATTER_NUM_CIRCUITS    = 9;  ///< Total circuit (switch) endpoints.
+constexpr uint8_t MATTER_NUM_CIRCUITS    = 13; ///< Total circuit (switch) endpoints.
 constexpr uint8_t MATTER_NUM_TEMP_SENSORS = 2; ///< Total temperature sensor endpoints.
 
 /// @}

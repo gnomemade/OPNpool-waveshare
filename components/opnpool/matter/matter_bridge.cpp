@@ -196,7 +196,11 @@ MatterBridge::create_circuit_endpoints()
         "Pool",
         "Feature 2",
         "Feature 3",
-        "Feature 4"
+        "Feature 4",
+        "Aux 4",
+        "Aux 5",
+        "Aux 6",
+        "Aux 7"
     };
 
     for (size_t i = 0; i < MATTER_NUM_CIRCUITS; i++) {

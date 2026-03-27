@@ -46,7 +46,11 @@ enum class switch_id_t : uint8_t {
     POOL     = 5,  ///< Pool circuit switch.
     FEATURE2 = 6,  ///< Feature circuit 2 switch.
     FEATURE3 = 7,  ///< Feature circuit 3 switch.
-    FEATURE4 = 8   ///< Feature circuit 4 switch.
+    FEATURE4 = 8,  ///< Feature circuit 4 switch.
+    AUX4     = 9,  ///< Auxiliary circuit 4 switch.
+    AUX5     = 10, ///< Auxiliary circuit 5 switch.
+    AUX6     = 11, ///< Auxiliary circuit 6 switch.
+    AUX7     = 12  ///< Auxiliary circuit 7 switch.
 };
 
     /// @brief Sensor entity identifiers for pool measurements.

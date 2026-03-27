@@ -80,7 +80,7 @@ CONF_CLIMATES = [  # used to overwrite climate_id_t enum in opnpool.h
 ]
 # MUST be in the same order as network_pool_circuit_t
 CONF_SWITCHES = [  # used to overwrite switch_id_t enum in opnpool.h
-    "spa", 
+    "spa",
     "aux1",
     "aux2",
     "aux3",
@@ -88,7 +88,11 @@ CONF_SWITCHES = [  # used to overwrite switch_id_t enum in opnpool.h
     "pool",
     "feature2",
     "feature3",
-    "feature4"
+    "feature4",
+    "aux4",
+    "aux5",
+    "aux6",
+    "aux7"
 ]
 CONF_ANALOG_SENSORS = { # keys are used to overwrite sensor_id_t enum in opnpool.h
     "air_temperature":    {"unit": UNIT_CELSIUS, CONF_DEVICE_CLASS: DEVICE_CLASS_TEMPERATURE, CONF_STATE_CLASS: STATE_CLASS_MEASUREMENT},

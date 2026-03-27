@@ -68,7 +68,11 @@ enum class network_pool_circuit_t : uint8_t {
     POOL     = 5,  ///< Pool circuit (body 1)
     FEATURE2 = 6,  ///< Feature 2
     FEATURE3 = 7,  ///< Feature 3
-    FEATURE4 = 8   ///< Feature 4
+    FEATURE4 = 8,  ///< Feature 4
+    AUX4     = 9,  ///< Auxiliary circuit 4
+    AUX5     = 10, ///< Auxiliary circuit 5
+    AUX6     = 11, ///< Auxiliary circuit 6
+    AUX7     = 12  ///< Auxiliary circuit 7
 };
 
 struct network_pump_run_mode_t {
