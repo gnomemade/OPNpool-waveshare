@@ -33,7 +33,7 @@ logger:
     poolstate_rx: INFO
     opnpool: WARN
     opnpool_climate: WARN
-    opnpool_switch: VERBOSE
+    opnpool_switch: WARN
     opnpool_sensor: WARN
     opnpool_binary_sensor: WARN
     opnpool_text_sensor: WARN
